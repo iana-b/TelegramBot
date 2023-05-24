@@ -1,6 +1,8 @@
 import telebot
 import requests
 import os
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -31,20 +33,21 @@ def select_city(message):
     bot.reply_to(message, f'Выберите город', reply_markup=markup)
 
 
-def get_weather_in(message, url):
+def get_weather_in(message, url, tz):
     r = requests.get(url=url)
     if r.status_code == 200:
         data = r.json()
-        bot.reply_to(message, f"{round(data['main']['temp'])}°C, {data['weather'][0]['description']}")
+        time = datetime.now(tz=ZoneInfo(tz)).strftime('%H:%M')
+        bot.reply_to(message, f"{round(data['main']['temp'])}°C, {data['weather'][0]['description']}\n\n⏰ {time}")
 
 
 @bot.message_handler(func=lambda message: message.text == 'Варшава 🌱')
 @bot.message_handler(func=lambda message: message.text == 'Якутск ❄️')
 def get_weather(message):
     if message.text == 'Варшава 🌱':
-        get_weather_in(message, f'{WEATHER_URL}&lat={52.2298}&lon={21.0118}')
+        get_weather_in(message, f'{WEATHER_URL}&lat={52.2298}&lon={21.0118}', 'Europe/Warsaw')
     elif message.text == 'Якутск ❄️':
-        get_weather_in(message, f'{WEATHER_URL}&lat={62.0339}&lon={129.7331}')
+        get_weather_in(message, f'{WEATHER_URL}&lat={62.0339}&lon={129.7331}', 'Asia/Yakutsk')
 
 
 bot.infinity_polling()
