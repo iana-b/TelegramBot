@@ -26,7 +26,7 @@ def send_welcome(message):
     markup.row(item_weather)
     item_movie = telebot.types.KeyboardButton('Случайный фильм 📽')
     markup.row(item_movie)
-    bot.reply_to(message, f'Привет, {message.from_user.first_name}! 💕', reply_markup=markup)
+    bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name}! 💕', reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Узнать погоду 🌤')
@@ -38,7 +38,7 @@ def select_city(message):
     markup.row(item_weather_ykt)
     markup.row(item_weather_waw)
     markup.row(item_back)
-    bot.reply_to(message, f'Выберите город', reply_markup=markup)
+    bot.send_message(message.chat.id, f'Выберите город', reply_markup=markup)
 
 
 def get_weather_in(message, url, tz):
@@ -65,7 +65,7 @@ def send_choose(message):
     markup.row(item_weather)
     item_movie = telebot.types.KeyboardButton('Случайный фильм 📽')
     markup.row(item_movie)
-    bot.reply_to(message, f'Выберите команду', reply_markup=markup)
+    bot.send_message(message.chat.id, f'Выберите команду', reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Случайный фильм 📽')
