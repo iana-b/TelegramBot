@@ -24,7 +24,7 @@ def send_welcome(message):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     item_weather = telebot.types.KeyboardButton('Узнать погоду 🌤')
     markup.row(item_weather)
-    item_movie = telebot.types.KeyboardButton('Рандомный фильм 📽')
+    item_movie = telebot.types.KeyboardButton('Случайный фильм 📽')
     markup.row(item_movie)
     bot.reply_to(message, f'Привет, {message.from_user.first_name}! 💕', reply_markup=markup)
 
@@ -34,8 +34,10 @@ def select_city(message):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     item_weather_ykt = telebot.types.KeyboardButton('Якутск ❄️')
     item_weather_waw = telebot.types.KeyboardButton('Варшава 🌱')
+    item_back = telebot.types.KeyboardButton('Назад 🔙')
     markup.row(item_weather_ykt)
     markup.row(item_weather_waw)
+    markup.row(item_back)
     bot.reply_to(message, f'Выберите город', reply_markup=markup)
 
 
@@ -56,7 +58,17 @@ def get_weather(message):
         get_weather_in(message, f'{WEATHER_URL}&lat={62.0339}&lon={129.7331}', 'Asia/Yakutsk')
 
 
-@bot.message_handler(func=lambda message: message.text == 'Рандомный фильм 📽')
+@bot.message_handler(func=lambda message: message.text == 'Назад 🔙')
+def send_choose(message):
+    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item_weather = telebot.types.KeyboardButton('Узнать погоду 🌤')
+    markup.row(item_weather)
+    item_movie = telebot.types.KeyboardButton('Случайный фильм 📽')
+    markup.row(item_movie)
+    bot.reply_to(message, f'Выберите команду', reply_markup=markup)
+
+
+@bot.message_handler(func=lambda message: message.text == 'Случайный фильм 📽')
 def get_movie(message):
     url = f'{MOVIE_URL}/3/movie/top_rated?language=ru-RU'
     headers = {
