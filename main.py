@@ -70,7 +70,8 @@ def send_choose(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Случайный фильм 📽')
 def get_movie(message):
-    url = f'{MOVIE_URL}/3/movie/top_rated?language=ru-RU'
+    random_page = random.randint(1, 150)
+    url = f'{MOVIE_URL}/3/movie/top_rated?language=ru-RU&page={random_page}'
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {MOVIE_API_KEY}"
@@ -78,7 +79,7 @@ def get_movie(message):
     r = requests.get(url=url, headers=headers)
     if r.status_code == 200:
         data = r.json()
-        random_movie = random.randint(0, 19)
+        random_movie = random.randint(0, len(data['results']) - 1)
         movie = data['results'][random_movie]
         poster = f"https://image.tmdb.org/t/p/w780{movie['poster_path']}"
         photo = Image.open(requests.get(poster, stream=True).raw)
