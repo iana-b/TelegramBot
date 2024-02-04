@@ -70,8 +70,8 @@ def send_choose(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Случайный фильм 📽')
 def get_movie(message):
-    random_page = random.randint(1, 150)
-    url = f'{MOVIE_URL}/3/movie/top_rated?language=ru-RU&page={random_page}'
+    random_page = random.randint(1, 75)
+    url = f'{MOVIE_URL}/3/movie/top_rated?language=en-US&page={random_page}'
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {MOVIE_API_KEY}"
